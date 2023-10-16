@@ -1,9 +1,9 @@
 import React from 'react'
 import { message } from 'antd'
 import RenderHook, { HookHandler, RenderHookProps } from '../RenderHook'
-import { toPromise } from '../utils'
 import showConfirm from './showConfirm'
 import { SimpleModalProps } from './internals'
+import toPromise from './toPromise'
 
 type ShowModalParam<T> = Omit<SimpleModalProps, 'content' | 'onOk' | 'onCancel'> & {
   // 渲染主体的方法

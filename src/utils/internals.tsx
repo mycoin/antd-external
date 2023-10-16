@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { ModalFuncProps } from 'antd'
-import { toReactNode } from '../utils'
+import toReactNode from './toReactNode'
 
 type SimpleModalProps = ModalFuncProps & {
   modalSize?: 'small' | 'medium' | 'large'

@@ -1,7 +1,7 @@
 import React, { BaseSyntheticEvent, Fragment, IframeHTMLAttributes, ReactNode } from 'react'
 import { utils } from 'rigel-base'
 import showModal from './showModal'
-import { toReactNode } from '../utils'
+import toReactNode from './toReactNode'
 
 type MessageData = {
   messageId?: string
