@@ -1,0 +1,59 @@
+{
+  "name": "antd-external",
+  "version": "0.5.0",
+  "description": "antd v4 external utils.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "typings/index.d.ts",
+  "scripts": {
+    "dev": "bundle-scripts dev",
+    "build": "bundle-scripts build",
+    "test": "mocha --recursive",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "files": [
+    "dist",
+    "typings",
+    "package.json",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mycoin/antd-external.git"
+  },
+  "dependencies": {
+    "@ant-design/colors": "6.0.0",
+    "@ant-design/icons": "4.7.0",
+    "antd": "^4.24.14",
+    "classnames": "^2.3.1",
+    "lodash": "^4.17.21",
+    "mac-scrollbar": "^0.10.7",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "rigel": "^0.0.2",
+    "rigel-base": "^0.0.6"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/register": "^7.14.5",
+    "@types/react": "^17.0.29",
+    "babel-eslint": "^10.1.0",
+    "bundle-scripts": "^0.3.x",
+    "eslint": "^7.3.1",
+    "eslint-config-takla": "^0.0.x",
+    "node-sass": "^6.0.1",
+    "prettier": "^2.7.1",
+    "typescript": "^4.3.5"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "author": "MYCOIN",
+  "license": "ISC"
+}
