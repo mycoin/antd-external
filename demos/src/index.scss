@@ -1,0 +1,17 @@
+@import '~antd/dist/antd.css';
+@import '../../dist/index.css';
+
+#content {
+  margin: 20px;
+  padding: 20px;
+  min-height: 600px;
+  border: 1px solid #EEE;
+}
+
+.app+.app {
+  margin-top: 10px;
+}
+
+.app>* {
+  margin-left: 8px;
+}

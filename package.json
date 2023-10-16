@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "bundle-scripts dev",
     "build": "bundle-scripts build",
-    "test": "mocha --recursive",
     "prepublishOnly": "npm run build && npm test"
   },
   "files": [
