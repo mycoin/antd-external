@@ -1,77 +1,95 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
-import { notification, Modal, Button } from '../Main'
+import { Button } from 'antd'
+import { showModal, showWindow } from '../Main'
 import NamedForm from '../conponents/NamedForm'
 
-const content = 'Successfully <a href="NamedForm">NamedForm</a>'
-
-notification.success({
-  description: content,
-})
-
 const ModalApp = () => {
-  const showAlert1 = () => {
-    Modal.success(content, (e) => {
-      e()
-    })
+  const valueModel = {
+    string: '',
   }
-  const showAlert2 = () => {
-    Modal.success({
-      content,
-      onOk: () => {
-        console.log('OK')
+  const showModal1 = () => {
+    showModal(valueModel, {
+      contentRender: (value, onChange, handler) => (
+        <NamedForm
+          handler={handler}
+          value={value}
+          onChange={onChange}
+        />
+      ),
+      onOk: (value) => {
+        return new Promise((resolve, rej) => {
+          if (value.string) {
+            setTimeout(resolve, 1000)
+          } else {
+            rej(new Error('请输入名称内容'))
+          }
+        })
       },
     })
   }
 
-  const showModal1 = () => {
-    Modal.showModal(
-      { string: 'OK' },
+  const messageId = 'A' + Date.now()
+  const showWindow1 = () => {
+    showWindow(
+      'https://air.1688.com/app/pages-group/home/ubanner-design.html?categoryId=10137&imageUrl=https%3A%2F%2Fcbu01.alicdn.com%2Fimg%2Fibank%2FO1CN01YMi23n1PV3Zt89zqz_%21%212249771845-0-cib.jpg&templateGroupId=1525',
       {
-        contentRender: (commonProps) => <NamedForm {...commonProps} />,
-        onCallback: (value, resolve, reject) => {
-          if (value.string === 'OK') {
-            reject('请修改调整参数')
-          } else {
-            setTimeout(resolve, 1000)
-          }
+        iframeProps: {
+          width: 960,
+          height: 600,
+        },
+        messageId,
+        onMessage: (handler, event) => {
+          console.error('onMessage', handler, event)
         },
       },
     )
   }
 
-  const showWindow1 = () => {
-    const messageId = Date.now()
-    Modal.showWindow({
-      url: 'about:blank',
+  const showWindow2 = () => {
+    showWindow('about:blank', {
+      title: (
+        <div>
+          智能白底图
+          <sub>产品属性描述错误或不完整，可能会导致商品审核不通过</sub>
+        </div>
+      ),
       iframeProps: {
-        width: 500,
-        height: 300,
+        width: 960,
+        height: 600,
       },
       messageId,
-      onLoad: (iframe, handler) => {
-        handler.write(`
-          Successfully loaded, will close automatically (1s)
-          <script>
-          parent.postMessage({messageId:${messageId},r:2}, '*')
-          </script>
-        `)
-      },
-      onMessage: (event, handler) => {
-        const { data } = event
-        if (data.r) {
-          console.log('OK')
-          setTimeout(handler.hideModal, 1000)
+      onMessage: (handler, dataMap) => {
+        if (dataMap.e === 0) {
+          handler.hideModal()
+        } else {
+          console.error('父亲:onMessage', dataMap)
         }
+      },
+      afterClose: () => {
+        console.error('父亲:afterClose')
+      },
+      onRender: (handler) => {
+        handler.write(`
+        Successfully loaded, will close automatically (1s)
+          <script>
+          addEventListener('message', (e)=>{
+            console.error("孩子:onMessage", e.data, e.origin)
+          })
+          window.se=(e)=>{
+            parent.postMessage({messageId:"${messageId}",e}, '*')
+          }
+          </script>
+          <button onClick="se(Date.now())">发送日志</button>
+          <button onClick="se(0)">关闭</button>
+        `)
       },
     })
   }
   return (
     <div className="app">
-      <Button onClick={showAlert1}>alert1</Button>
-      <Button onClick={showAlert2}>alert2</Button>
       <Button onClick={showModal1}>showModal</Button>
       <Button onClick={showWindow1}>showWindow</Button>
+      <Button onClick={showWindow2}>showWindow2</Button>
     </div>
   )
 }

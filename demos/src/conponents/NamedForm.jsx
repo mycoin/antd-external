@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
 
 export default (props) => {
-  const { value, hideModal, handleUpdate } = props
+  const { value, handler, onChange } = props
   const [string, updateString] = useState(value.string)
-
+  const handleChange = (event) => {
+    updateString(event.target.value)
+  }
   const onBlur = () => {
-    handleUpdate({
+    onChange({
       string,
     })
-  }
-  const onChange = (event) => {
-    updateString(event.target.value)
   }
   return (
     <div>
       <input
         value={string}
         onBlur={onBlur}
-        onChange={onChange}
+        onChange={handleChange}
       />
       <button
         type="button"
-        onClick={hideModal}>
-        hideModal
+        onClick={handler.onOk}>
+        onOk
+      </button>
+      <button
+        type="button"
+        onClick={handler.onCancel}>
+        onCancel
       </button>
     </div>
   )

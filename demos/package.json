@@ -24,7 +24,7 @@
     "react-dom": "16.14.0"
   },
   "devDependencies": {
-    "@ali/takla-scripts": "^0.3.x",
+    "@ali/takla-scripts": "^0.4.x",
     "@alife/web-based": "2.2.1",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.14.5",

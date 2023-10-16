@@ -56,4 +56,5 @@ const normalize = (param: SimpleModalProps): SimpleModalProps => {
     ...restProps,
   }
 }
+
 export { normalize, SimpleModalProps }

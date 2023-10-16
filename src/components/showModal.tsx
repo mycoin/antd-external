@@ -1,4 +1,5 @@
 import React from 'react'
+import { message } from 'antd'
 import RenderHook, { HookHandler, RenderHookProps } from '../RenderHook'
 import { toPromise } from '../utils'
 import showConfirm from './showConfirm'
@@ -14,13 +15,22 @@ type ShowModalParam<T> = Omit<SimpleModalProps, 'content' | 'onOk' | 'onCancel'>
 }
 
 export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
-  const { contentRender, onOk, onCancel, afterClose, className, ...restProps } = props
+  const { contentRender, onOk, onCancel, afterClose, ...restProps } = props
   const handler: HookHandler<T> = {
     current,
   }
-  const toExecute = (method: any, params?: any) => {
+  const toExecute = (method: any, args?: any, showMessage?: boolean) => {
     if (typeof method === 'function') {
-      return toPromise(method(params) || true)
+      const returnResult = toPromise(method(args) || true)
+      if (showMessage) {
+        returnResult.catch((error) => {
+          if (error && error.message) {
+            message.destroy()
+            message.warning(error.message)
+          }
+        })
+      }
+      return returnResult
     } else {
       return toPromise(true)
     }
@@ -38,7 +48,7 @@ export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
       />
     ),
     onOk: () => {
-      return toExecute(onOk, handler.current)
+      return toExecute(onOk, handler.current, true)
     },
     onCancel: (handleNext: any) => {
       if (isClose === true) {
@@ -57,15 +67,13 @@ export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
       }
     },
   })
-
   // 如下两个函数供渲染表单方法使用
   handler.onCancel = () => {
     toExecute(onCancel).then(hook.destroy)
   }
   handler.onOk = () => {
-    toExecute(onOk, handler.current).then(hook.destroy)
+    toExecute(onOk, handler.current, true).then(hook.destroy)
   }
-
   return hook
 }
 

@@ -1,0 +1,31 @@
+.ant-external-modal-window {
+  iframe {
+    border: 0;
+    background: #fff;
+  }
+  .modal-window-title {
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 16px;
+    font-weight: 500;
+    sub {
+      bottom: auto;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 10px;
+      color: #666;
+    }
+  }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+  .ant-modal-confirm-title,
+  .ant-modal-confirm-btns {
+    display: none;
+  }
+  .ant-modal-confirm-content {
+    margin: 0;
+    font-size: 0;
+  }
+}
