@@ -2,14 +2,23 @@ import React, { HTMLAttributes, ReactElement, ReactHTML, ReactNode, createElemen
 
 type ToReactNode = HTMLAttributes<Element> & {
   as?: keyof ReactHTML
+  isInline?: boolean
 }
 
 export default (content: ReactNode, params?: ToReactNode): ReactElement => {
-  const { as, ...otherAttrs } = params || {}
+  const { as, isInline, ...otherAttrs } = params || {}
   const attrs: HTMLAttributes<Element> = {
     ...otherAttrs,
   }
-
+  if (isInline === true) {
+    if (attrs.style) {
+      attrs.style.display = 'inline'
+    } else {
+      attrs.style = {
+        display: 'inline',
+      }
+    }
+  }
   if (React.isValidElement(content)) {
     if (params && typeof params === 'object') {
       attrs.children = content

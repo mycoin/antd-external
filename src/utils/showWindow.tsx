@@ -1,32 +1,16 @@
-import React, { BaseSyntheticEvent, Fragment, IframeHTMLAttributes, ReactNode } from 'react'
+import React, { Fragment, IframeHTMLAttributes, ReactNode } from 'react'
 import { utils } from 'rigel-base'
 import showModal from './showModal'
 import toReactNode from './toReactNode'
+import { BaseEmbedWindowParam, MessageData, WindowHandler } from './internals'
 
-type MessageData = {
-  messageId?: string
-  [prop: string]: any
-}
-
-type WindowHandler = {
-  target?: HTMLIFrameElement
-  postMessage: (message: any, targetOrigin?: string) => void
-  write: (html: string) => boolean
-  hideModal: () => void
-}
-
-type ShowWindowParam = {
+type ShowWindowParam = BaseEmbedWindowParam & {
   title?: ReactNode
-  messageId?: string
   iframeProps?: Omit<IframeHTMLAttributes<Element>, 'src'>
-
-  onRender?: (handle: WindowHandler) => void
-  onMessage?: (handle: WindowHandler, data: MessageData) => void
-  afterClose?: () => void
 }
 
 // 用于处理窗体里面抛出来消息
-const initMessageEvent = (handler: WindowHandler, params: ShowWindowParam) => {
+const initMessageEvent = (handler: WindowHandler, params: BaseEmbedWindowParam) => {
   const { messageId, afterClose, onMessage } = params
   const listener = (event: MessageEvent<MessageData>) => {
     if (typeof onMessage === 'function') {
@@ -38,6 +22,7 @@ const initMessageEvent = (handler: WindowHandler, params: ShowWindowParam) => {
       }
     }
   }
+
   // 添加事件绑定
   addEventListener('message', listener)
   // 返回事件销毁函数
@@ -54,9 +39,9 @@ const initMessageEvent = (handler: WindowHandler, params: ShowWindowParam) => {
   }
 }
 
-export default (iframeUrl: string, params: ShowWindowParam) => {
+export default (urlSrc: string, params: ShowWindowParam) => {
   const { title, messageId, iframeProps, onRender } = params
-  const url = utils.toUrl(iframeUrl || 'about:blank', {
+  const iframeUrl = utils.toUrl(urlSrc || 'about:blank', {
     messageId,
     targetOrigin: location.origin,
   })
@@ -106,8 +91,8 @@ export default (iframeUrl: string, params: ShowWindowParam) => {
           }}
           allowFullScreen
           allowTransparency={false}
-          src={url}
-          onLoad={(event: BaseSyntheticEvent) => {
+          src={iframeUrl}
+          onLoad={() => {
             if (typeof onRender === 'function') {
               onRender(handler)
             }
@@ -123,4 +108,4 @@ export default (iframeUrl: string, params: ShowWindowParam) => {
   // 返回销毁
   return hook
 }
-export { WindowHandler, ShowWindowParam }
+export { ShowWindowParam }

@@ -1,9 +1,9 @@
 import React from 'react'
-import { message } from 'antd'
 import RenderHook, { HookHandler, RenderHookProps } from '../RenderHook'
 import showConfirm from './showConfirm'
 import { SimpleModalProps } from './internals'
 import toPromise from './toPromise'
+import showMessage from './showMessage'
 
 type ShowModalParam<T> = Omit<SimpleModalProps, 'content' | 'onOk' | 'onCancel'> & {
   // 渲染主体的方法
@@ -19,14 +19,16 @@ export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
   const handler: HookHandler<T> = {
     current,
   }
-  const toExecute = (method: any, args?: any, showMessage?: boolean) => {
+  const toExecute = (method: any, args?: any, sm?: boolean) => {
     if (typeof method === 'function') {
       const returnResult = toPromise(method(args) || true)
-      if (showMessage) {
+      if (sm) {
         returnResult.catch((error) => {
-          if (error && error.message) {
-            message.destroy()
-            message.warning(error.message)
+          if (error && typeof error.message === 'string') {
+            showMessage({
+              type: 'error',
+              content: error.message,
+            })
           }
         })
       }
