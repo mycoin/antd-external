@@ -1,5 +1,6 @@
 import { Modal } from 'antd'
-import { SimpleModalProps, normalize } from './internals'
+import { normalize } from './internals'
+import { SimpleModalProps } from '../interfaces'
 
 export default (params: SimpleModalProps) => {
   return Modal.confirm(normalize(params))

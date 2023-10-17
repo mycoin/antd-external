@@ -2,19 +2,19 @@ import React, { Fragment, IframeHTMLAttributes, ReactNode } from 'react'
 import { utils } from 'rigel-base'
 import showModal from './showModal'
 import toReactNode from './toReactNode'
-import { BaseEmbedWindowParam, MessageData, WindowHandler } from './internals'
+import { BaseEmbedWindowParam, MessageData, WindowHandler } from '../interfaces'
 
-type ShowWindowParam = BaseEmbedWindowParam & {
+type ShowWindowParam = BaseEmbedWindowParam<WindowHandler> & {
   title?: ReactNode
   iframeProps?: Omit<IframeHTMLAttributes<Element>, 'src'>
 }
 
 // 用于处理窗体里面抛出来消息
-const initMessageEvent = (handler: WindowHandler, params: BaseEmbedWindowParam) => {
+const initMessageEvent = (handler: WindowHandler, params: BaseEmbedWindowParam<WindowHandler>) => {
   const { messageId, afterClose, onMessage } = params
   const listener = (event: MessageEvent<MessageData>) => {
     if (typeof onMessage === 'function') {
-      const data: MessageData = event.data || {}
+      const data = event.data || {}
       // 这里过滤无效的消息事件
       // 如果消息里面不包含编号则屏蔽
       if (!messageId || data.messageId == messageId) {
@@ -22,7 +22,6 @@ const initMessageEvent = (handler: WindowHandler, params: BaseEmbedWindowParam) 
       }
     }
   }
-
   // 添加事件绑定
   addEventListener('message', listener)
   // 返回事件销毁函数

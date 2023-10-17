@@ -1,33 +1,6 @@
 import { CSSProperties } from 'react'
-import { ModalFuncProps } from 'antd'
 import toReactNode from './toReactNode'
-
-type MessageData = {
-  messageId?: string
-  [prop: string]: any
-}
-
-type SimpleModalProps = ModalFuncProps & {
-  modalSize?: 'small' | 'medium' | 'large'
-  locale?: {
-    ok: string
-    cancel?: string
-  }
-}
-
-type WindowHandler = {
-  target?: HTMLIFrameElement
-  postMessage: (message: any, targetOrigin?: string) => void
-  write: (html: string) => boolean
-  hideModal: () => void
-}
-
-type BaseEmbedWindowParam = {
-  messageId?: string
-  onMessage?: (handle: WindowHandler, data: MessageData) => void
-  onRender?: (handle: WindowHandler) => void
-  afterClose?: () => void
-}
+import { SimpleModalProps } from '../interfaces'
 
 const styleMapper: Record<string, CSSProperties> = {
   small: {
@@ -62,6 +35,7 @@ const normalize = (param: SimpleModalProps): SimpleModalProps => {
     forceRender: true,
     ...param,
   }
+
   return {
     title: toReactNode(title),
     content: toReactNode(content),
@@ -77,4 +51,3 @@ const normalize = (param: SimpleModalProps): SimpleModalProps => {
 }
 
 export { normalize }
-export { MessageData, WindowHandler, BaseEmbedWindowParam, SimpleModalProps }
