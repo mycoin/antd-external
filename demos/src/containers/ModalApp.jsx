@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'antd'
-import { showModal, showWindow } from '../Main'
+import { Scrollbar, showModal, showWindow } from '../Main'
 import NamedForm from '../conponents/NamedForm'
 
 const ModalApp = () => {
@@ -90,6 +90,24 @@ const ModalApp = () => {
       <Button onClick={showModal1}>showModal</Button>
       <Button onClick={showWindow1}>showWindow</Button>
       <Button onClick={showWindow2}>showWindow2</Button>
+      <Scrollbar style={{ height: 300, border: '1px solid' }}>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+        <p>Li</p>
+      </Scrollbar>
     </div>
   )
 }

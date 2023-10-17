@@ -5,13 +5,13 @@
   margin: 20px;
   padding: 20px;
   min-height: 600px;
-  border: 1px solid #EEE;
+  border: 1px solid #eee;
 }
 
-.app+.app {
+.app + .app {
   margin-top: 10px;
 }
 
-.app>* {
+.app > * {
   margin-left: 8px;
 }

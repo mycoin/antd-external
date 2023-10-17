@@ -13,13 +13,10 @@
       "@alife/web-based"
     ]
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@alife/sample-ui": "^1.0.x",
-    "@alife/ui-utils": "^0.2.x",
     "antd": "4.22.2",
     "classnames": "2.3.1",
+    "mac-scrollbar": "^0.10.7",
     "react": "16.14.0",
     "react-dom": "16.14.0"
   },

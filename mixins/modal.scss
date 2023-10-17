@@ -21,11 +21,11 @@
     padding: 0;
   }
   .ant-modal-confirm-title,
-  .ant-modal-confirm-btns {
-    display: none;
-  }
   .ant-modal-confirm-content {
     margin: 0;
     font-size: 0;
+  }
+  .ant-modal-confirm-btns {
+    display: none;
   }
 }
