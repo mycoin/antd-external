@@ -1,9 +1,9 @@
 import React from 'react'
-import RenderHook, { HookHandler, RenderHookProps } from '../RenderHook'
+import RenderHook, { RenderHookProps } from '../RenderHook'
 import showConfirm from './showConfirm'
 import toPromise from './toPromise'
 import showMessage from './showMessage'
-import { SimpleModalProps } from '../interfaces'
+import { RenderHookHandler, SimpleModalProps } from '../interfaces'
 
 type ShowModalParam<T> = Omit<SimpleModalProps, 'content' | 'onOk' | 'onCancel'> & {
   // 渲染主体的方法
@@ -16,7 +16,7 @@ type ShowModalParam<T> = Omit<SimpleModalProps, 'content' | 'onOk' | 'onCancel'>
 
 export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
   const { contentRender, onOk, onCancel, afterClose, ...restProps } = props
-  const handler: HookHandler<T> = {
+  const handler: RenderHookHandler<T> = {
     current,
   }
   const toExecute = (method: any, args?: any, sm?: boolean) => {

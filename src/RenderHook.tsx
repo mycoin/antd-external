@@ -1,14 +1,9 @@
 import { Component, ReactNode } from 'react'
 import { cloneDeep } from 'lodash'
-
-type HookHandler<T> = {
-  current: Readonly<T>
-  onOk?: () => void
-  onCancel?: () => void
-}
+import { RenderHookHandler } from './interfaces'
 
 type RenderHookProps<T> = {
-  handler: HookHandler<T>
+  handler: RenderHookHandler<T>
   value: T
   contentRender: (
     // 当前状态对象
@@ -16,7 +11,7 @@ type RenderHookProps<T> = {
     // 更新状态
     onChange: (nextValue: Partial<T>) => void,
     // 回调函数
-    handler: HookHandler<T>,
+    handler: RenderHookHandler<T>,
   ) => ReactNode
 }
 
@@ -56,4 +51,4 @@ export default class<T = {}> extends Component<RenderHookProps<T>, T | { [contex
   }
 }
 
-export { HookHandler, RenderHookProps }
+export { RenderHookProps }

@@ -5,12 +5,10 @@ type MessageData = {
   [prop: string]: any
 }
 
-type SimpleModalProps = ModalFuncProps & {
-  modalSize?: 'small' | 'medium' | 'large'
-  locale?: {
-    ok: string
-    cancel?: string
-  }
+type RenderHookHandler<T> = {
+  current: Readonly<T>
+  onOk?: () => void
+  onCancel?: () => void
 }
 
 type WindowHandler = {
@@ -27,4 +25,12 @@ type BaseEmbedWindowParam<T extends WindowHandler = WindowHandler> = {
   afterClose?: () => void
 }
 
-export { MessageData, SimpleModalProps, WindowHandler, BaseEmbedWindowParam }
+type SimpleModalProps = ModalFuncProps & {
+  modalSize?: 'small' | 'medium' | 'large'
+  locale?: {
+    ok: string
+    cancel?: string
+  }
+}
+
+export { MessageData, SimpleModalProps, RenderHookHandler, WindowHandler, BaseEmbedWindowParam }
