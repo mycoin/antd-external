@@ -49,9 +49,7 @@ export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
         handler={handler}
       />
     ),
-    onOk: () => {
-      return toExecute(onOk, handler.current, true)
-    },
+    onOk: () => toExecute(onOk, handler.current, true),
     onCancel: (handleNext: any) => {
       if (isClose === true) {
         // 如果通过点击关闭按钮则无需二次确认

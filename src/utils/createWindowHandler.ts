@@ -36,25 +36,27 @@ export default (urlSrc: string, params: BaseEmbedWindowParam<WindowHandler>) => 
       }
     },
     write: (html) => {
-      if (handler.target) {
-        handler.target.document.open()
-        handler.target.document.write(html)
-        handler.target.document.close()
+      const contentWindow = handler.target
+      if (contentWindow) {
+        contentWindow.document.open()
+        contentWindow.document.write(html)
+        contentWindow.document.close()
         return true
       } else {
         return false
       }
     },
     destroy: () => {
+      const contentWindow = handler.target
       // 防止重复回调
-      if (handler.target) {
+      if (contentWindow) {
         removeEventListener('message', eventListener)
         if (typeof afterClose === 'function') {
           afterClose()
         }
+        // 销毁对象引用关系
+        delete handler.target
       }
-      // 销毁对象引用关系
-      handler.target = null
     },
     hideModal: () => {},
   }
