@@ -1,5 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
 import { Button } from 'antd'
+import { utils } from 'rigel-base'
 import { Scrollbar, showModal, showWindow } from '../Main'
 import NamedForm from '../conponents/NamedForm'
 
@@ -28,25 +30,14 @@ const ModalApp = () => {
     })
   }
 
-  const messageId = 'A' + Date.now()
+  const messageId = utils.getGuid(11)
   const showWindow1 = () => {
-    showWindow(
-      'https://air.1688.com/app/pages-group/home/ubanner-design.html?categoryId=10137&imageUrl=https%3A%2F%2Fcbu01.alicdn.com%2Fimg%2Fibank%2FO1CN01YMi23n1PV3Zt89zqz_%21%212249771845-0-cib.jpg&templateGroupId=1525',
-      {
-        iframeProps: {
-          width: 960,
-          height: 600,
-        },
-        messageId,
-        onMessage: (handler, event) => {
-          console.error('onMessage', handler, event)
-        },
-      },
-    )
-  }
-
-  const showWindow2 = () => {
-    showWindow('about:blank', {
+    const url = utils.toUrl('https://air.1688.com/app/pages-group/home/ubanner-design.html', {
+      categoryId: 10137,
+      templateGroupId: 1525,
+      imageUrl: 'https://cbu01.alicdn.com/img/ibank/O1CN01YMi23n1PV3Zt89zqz_!!2249771845-0-cib.jpg',
+    })
+    showWindow(url, {
       title: (
         <div>
           智能白底图
@@ -58,11 +49,33 @@ const ModalApp = () => {
         height: 600,
       },
       messageId,
+      onMessage: (handler, data) => {
+        console.error('onMessage', handler, data)
+      },
+    })
+  }
+
+  const showWindow2 = () => {
+    showWindow('about:blank', {
+      title: (
+        <div>
+          智能白底图
+          <sub>产品属性描述错误或不完整，可能会导致商品审核不通过</sub>
+        </div>
+      ),
+      iframeProps: {
+        width: 460,
+        height: 200,
+      },
+      // messageId,
       onMessage: (handler, dataMap) => {
+        console.error('父：', dataMap)
         if (dataMap.e === 0) {
           handler.hideModal()
         } else {
-          console.error('父亲:onMessage', dataMap)
+          handler.postMessage({
+            v: -dataMap.e,
+          })
         }
       },
       afterClose: () => {
@@ -70,18 +83,29 @@ const ModalApp = () => {
       },
       onRender: (handler) => {
         handler.write(`
-        Successfully loaded, will close automatically (1s)
           <script>
           addEventListener('message', (e)=>{
             console.error("孩子:onMessage", e.data, e.origin)
+            if (e.data.messageId !== "${messageId}") {
+              return;
+            }
+            RES.innerHTML = RES.innerHTML + "<br>" + JSON.stringify(e.data);
           })
+          window.V = 1;
           window.se=(e)=>{
-            parent.postMessage({messageId:"${messageId}",e}, '*')
-          }
+            parent.postMessage({
+              messageId: "${messageId}",
+              e,
+            }, '${location.origin}')
+          };
           </script>
-          <button onClick="se(Date.now())">发送日志</button>
+          <button onClick="se(V++)">发送日志</button>
           <button onClick="se(0)">关闭</button>
+          <small id="RES"></small>
         `)
+        handler.postMessage({
+          v: '初始化',
+        })
       },
     })
   }

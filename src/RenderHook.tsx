@@ -1,5 +1,4 @@
 import { Component, ReactNode } from 'react'
-import { cloneDeep } from 'lodash'
 import { RenderHookHandler } from './interfaces'
 
 type RenderHookProps<T> = {
@@ -21,7 +20,7 @@ export default class<T = {}> extends Component<RenderHookProps<T>, T | { [contex
   componentWillMount() {
     const { value } = this.props
     if (value && typeof value === 'object') {
-      this.state = cloneDeep(value)
+      this.state = Object.assign({}, value)
     } else {
       this.state = {
         [contextKeyName]: value || null,

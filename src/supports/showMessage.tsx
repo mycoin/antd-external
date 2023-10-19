@@ -17,6 +17,7 @@ const showMessage = (params: ArgsProps) => {
     },
     ...otherProps,
   })
+  // 返回隐藏销毁的方法
   return () => {
     unsafeHide()
   }
