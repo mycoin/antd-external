@@ -1,63 +1,70 @@
 import React from 'react'
-import RenderHook, { RenderHookProps } from '../RenderHook'
+import { RenderProxy } from '../components'
 import showConfirm from './showConfirm'
 import toPromise from './toPromise'
 import showMessage from './showMessage'
-import { RenderHookHandler, SimpleModalProps } from '../interfaces'
+import { RenderHookHandler, RenderHookProxyBase, ModalProps } from '../interfaces'
 
-type ShowModalParam<T> = Omit<SimpleModalProps, 'content' | 'onOk' | 'onCancel'> & {
-  // 渲染主体的方法
-  contentRender: RenderHookProps<T>['contentRender']
+type ShowModalParams<T> = Omit<ModalProps, keyof ShowModalOverrrde<T>> & ShowModalOverrrde<T>
+type ShowModalOverrrde<T> = {
+  content?: null
+  // 渲染主体（Hook）
+  contentRender: RenderHookProxyBase<T>['contentRender']
   // 点击提交按钮
   onOk: (value: T) => Promise<void> | void
   // 点击取消按钮
   onCancel?: () => Promise<void> | void
 }
 
-export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
+// 执行回调函数
+const toExecute = (method: any, args?: any, doCatch?: boolean): Promise<any> => {
+  if (typeof method === 'function') {
+    const returnValue = toPromise(method(args) || true)
+    if (doCatch === true) {
+      returnValue.catch((error) => {
+        showMessage(error)
+      })
+    }
+    return returnValue
+  } else {
+    return toPromise(true)
+  }
+}
+
+export default <T extends {}>(current: T, props: ShowModalParams<T>) => {
+  let isClose = false
+
   const { contentRender, onOk, onCancel, afterClose, ...restProps } = props
+  const executeOk = () => toExecute(onOk, handler.current, true)
+  const executeCancel = () => toExecute(onCancel)
+
   const handler: RenderHookHandler<T> = {
     current,
+    destroy: () => hook.destroy(),
+    onOk: () => {
+      executeOk().then(handler.destroy)
+    },
+    onCancel: () => {
+      executeCancel().then(handler.destroy)
+    },
   }
-  const toExecute = (method: any, args?: any, sm?: boolean) => {
-    if (typeof method === 'function') {
-      const returnResult = toPromise(method(args) || true)
-      if (sm) {
-        returnResult.catch((error) => {
-          if (error && typeof error.message === 'string') {
-            showMessage({
-              type: 'error',
-              content: error.message,
-            })
-          }
-        })
-      }
-      return returnResult
-    } else {
-      return toPromise(true)
-    }
-  }
-
-  let isClose = false
   const hook = showConfirm({
     ...restProps,
     icon: null,
     content: (
-      <RenderHook
+      <RenderProxy
         contentRender={contentRender}
         value={current}
         handler={handler}
       />
     ),
-    onOk: () => toExecute(onOk, handler.current, true),
-    onCancel: (handleNext: any) => {
+    onOk: executeOk,
+    onCancel: (handleNext) => {
       if (isClose === true) {
         // 如果通过点击关闭按钮则无需二次确认
         handleNext()
       } else {
-        toExecute(onCancel).then(() => {
-          handleNext()
-        })
+        executeCancel().then(handleNext)
       }
     },
     afterClose: () => {
@@ -67,14 +74,7 @@ export default <T extends {}>(current: T, props: ShowModalParam<T>) => {
       }
     },
   })
-  // 如下两个函数供渲染表单方法使用
-  handler.onCancel = () => {
-    toExecute(onCancel).then(hook.destroy)
-  }
-  handler.onOk = () => {
-    toExecute(onOk, handler.current, true).then(hook.destroy)
-  }
   return hook
 }
 
-export { ShowModalParam }
+export { ShowModalParams }

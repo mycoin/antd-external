@@ -1,7 +1,7 @@
 import { Modal, ModalFuncProps } from 'antd'
 import { CSSProperties } from 'react'
-import { SimpleModalProps } from '../interfaces'
 import toReactNode from './toReactNode'
+import { ModalProps } from '../interfaces'
 
 const styleMapper: Record<string, CSSProperties> = {
   small: {
@@ -18,7 +18,7 @@ const styleMapper: Record<string, CSSProperties> = {
   },
 }
 
-const normalize = (param: SimpleModalProps): ModalFuncProps => {
+const normalize = (param: ModalProps): ModalFuncProps => {
   const { modalSize, style, locale, title, content, ...restProps } = {
     title: '温馨提示',
     keyboard: false,
@@ -51,6 +51,6 @@ const normalize = (param: SimpleModalProps): ModalFuncProps => {
   }
 }
 
-export default (params: SimpleModalProps) => {
+export default (params: ModalProps) => {
   return Modal.confirm(normalize(params))
 }

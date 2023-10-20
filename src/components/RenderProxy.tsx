@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react'
-import { RenderHookHandler } from './interfaces'
+import { RenderHookHandler } from '../interfaces'
 
-type RenderHookProps<T> = {
+type RenderProxyState<T> = T | { [contextKeyName]: any }
+type RenderProxyProps<T> = {
   handler: RenderHookHandler<T>
   value: T
   contentRender: (
@@ -16,18 +17,17 @@ type RenderHookProps<T> = {
 
 const contextKeyName = Symbol('context')
 
-export default class<T = {}> extends Component<RenderHookProps<T>, T | { [contextKeyName]: any }> {
+export default class<T = {}> extends Component<RenderProxyProps<T>, RenderProxyState<T>> {
   componentWillMount() {
     const { value } = this.props
     if (value && typeof value === 'object') {
       this.state = Object.assign({}, value)
     } else {
       this.state = {
-        [contextKeyName]: value || null,
+        [contextKeyName]: value,
       }
     }
   }
-
   render() {
     const { handler, contentRender } = this.props
     const onChange = (nextState: unknown) => {
@@ -39,6 +39,7 @@ export default class<T = {}> extends Component<RenderHookProps<T>, T | { [contex
         this.setState(nextState)
       }
     }
+
     // 勾出去使用
     handler.current =
       contextKeyName in this.state
@@ -50,4 +51,4 @@ export default class<T = {}> extends Component<RenderHookProps<T>, T | { [contex
   }
 }
 
-export { RenderHookProps }
+export { RenderProxyProps }

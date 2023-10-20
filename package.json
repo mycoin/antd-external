@@ -1,6 +1,6 @@
 {
   "name": "antd-external",
-  "version": "0.5.12",
+  "version": "0.5.20",
   "description": "antd v4 external utils.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -12,6 +12,7 @@
   },
   "files": [
     "dist",
+    "mixins",
     "typings",
     "package.json",
     "README.md"
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "antd": "^4.24.14",
+    "classnames": "^2.3.2",
     "mac-scrollbar": "^0.10.7",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

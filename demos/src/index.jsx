@@ -1,13 +1,16 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ModalApp from './containers/ModalApp'
+import ModalTests from './containers/ModalTests'
+import WindowTests from './containers/WindowTests'
+import ConfirmTests from './containers/ConfirmTests'
 
 import './index.scss'
 
 ReactDOM.render(
   <div>
-    <ModalApp />
+    <ModalTests />
+    <WindowTests />
+    <ConfirmTests />
   </div>,
   document.getElementById('content'),
 )

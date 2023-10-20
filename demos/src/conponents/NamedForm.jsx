@@ -11,6 +11,11 @@ export default (props) => {
       string,
     })
   }
+
+  const onClick = () => {
+    handler.onOk()
+  }
+
   return (
     <div>
       <input
@@ -20,7 +25,7 @@ export default (props) => {
       />
       <button
         type="button"
-        onClick={handler.onOk}>
+        onClick={onClick}>
         onOk
       </button>
       <button

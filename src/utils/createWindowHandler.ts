@@ -1,4 +1,13 @@
-import { BaseEmbedWindowParam, MessageData, WindowHandler } from '../interfaces'
+import { WindowMessageBase, WindowHandler } from '../interfaces'
+
+const getTargetOrigin = (urlSrc: string, defaultValue: string) => {
+  try {
+    const { origin, hostname } = new URL(urlSrc)
+    return hostname ? origin : defaultValue
+  } catch (e) {
+    return defaultValue
+  }
+}
 
 /**
  * 绑定消息事件并且返回必要的快捷操作工具
@@ -7,36 +16,29 @@ import { BaseEmbedWindowParam, MessageData, WindowHandler } from '../interfaces'
  * @param params
  * @returns
  */
-export default (urlSrc: string, params: BaseEmbedWindowParam<WindowHandler>) => {
-  const { messageId, onMessage, afterClose } = params
-  const { hostname, origin } = new URL(urlSrc)
-  const eventListener = (event: MessageEvent<MessageData>) => {
+export default <T>(urlSrc: string, params: WindowMessageBase<T>) => {
+  const { onMessage } = params
+
+  const targetOrigin = getTargetOrigin(urlSrc, '*')
+  const listener = (event: MessageEvent<T>) => {
     // 只监听来着窗口的消息
-    if (event.source !== handler.target) {
-      return
-    }
-    if (typeof onMessage === 'function') {
-      const data = event.data || {}
-      // 这里过滤无效的消息事件
+    if (event.source === handler.contentWindow) {
       // 如果消息里面不包含编号则屏蔽
-      if (!messageId || data.messageId == messageId) {
-        onMessage(handler, data)
-      }
+      onMessage(handler, event.data)
     }
   }
-  const handler: WindowHandler = {
+
+  const handler: WindowHandler<T> = {
+    contentWindow: null,
+    // 发送给内嵌页面容器
     postMessage: (data) => {
-      const contentWindow = handler.target
+      const { contentWindow } = handler
       if (contentWindow) {
-        if (messageId && data && typeof data === 'object') {
-          data.messageId = messageId
-        }
-        // 发送给内嵌页面容器
-        contentWindow.postMessage(data, hostname ? origin : '*')
+        contentWindow.postMessage(data, targetOrigin)
       }
     },
     write: (html) => {
-      const contentWindow = handler.target
+      const { contentWindow } = handler
       if (contentWindow) {
         contentWindow.document.open()
         contentWindow.document.write(html)
@@ -47,21 +49,17 @@ export default (urlSrc: string, params: BaseEmbedWindowParam<WindowHandler>) => 
       }
     },
     destroy: () => {
-      const contentWindow = handler.target
-      // 防止重复回调
+      const { contentWindow } = handler
+      // 防止重复回调（该函数必然重复执行）
       if (contentWindow) {
-        removeEventListener('message', eventListener)
-        if (typeof afterClose === 'function') {
-          afterClose()
-        }
-        // 销毁对象引用关系
-        delete handler.target
+        removeEventListener('message', listener)
       }
+      // 销毁对象引用关系
+      delete handler.contentWindow
     },
-    hideModal: () => {},
   }
   // 添加事件绑定
-  addEventListener('message', eventListener)
+  addEventListener('message', listener)
   // 返回句柄
   return handler
 }

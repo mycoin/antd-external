@@ -8,6 +8,7 @@ const showMessage = (params: ArgsProps) => {
 
   const { content, ...otherProps } = params
   const unsafeHide = message.open({
+    type: 'info',
     duration: 1.5,
     content: toReactNode(content, {
       isInline: true,
@@ -23,10 +24,14 @@ const showMessage = (params: ArgsProps) => {
   }
 }
 
-export default (content: string | ReactElement | ArgsProps) => {
-  if (React.isValidElement(content) || typeof content === 'string') {
+export default (content: string | Error | ReactElement | ArgsProps) => {
+  if (content instanceof Error) {
     return showMessage({
-      type: 'info',
+      type: 'warning',
+      content: content.message,
+    })
+  } else if (React.isValidElement(content) || typeof content === 'string') {
+    return showMessage({
       content,
     })
   } else if (content && typeof content === 'object') {

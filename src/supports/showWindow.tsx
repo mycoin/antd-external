@@ -1,25 +1,33 @@
 import React, { Fragment, IframeHTMLAttributes, ReactNode } from 'react'
-import { utils } from 'rigel-base'
-import showModal from './showModal'
+import classNames from 'classnames'
+import showModal, { ShowModalParams } from './showModal'
+import { MessageBody, WindowHandler, WindowMessageBase } from '../interfaces'
+import { WindowProxy } from '../components'
 import toReactNode from './toReactNode'
-import { BaseEmbedWindowParam, WindowHandler } from '../interfaces'
-import { createWindowHandler } from '../utils'
 
-type ShowWindowParam = BaseEmbedWindowParam<WindowHandler> & {
-  title?: ReactNode
-  iframeProps?: Omit<IframeHTMLAttributes<Element>, 'src'>
-}
+type ShowWindowParam<T> = WindowMessageBase<T> &
+  ShowModalParams<null> & {
+    messageId?: string
+    iframeProps?: Omit<IframeHTMLAttributes<Element>, 'src'>
+    // 窗口加载完成的回调方法
+    onRender?: (handle: WindowHandler<T>) => void
+  }
 
-export default (urlSrc: string, params: ShowWindowParam) => {
-  const { title, messageId, iframeProps, onRender } = params
-  const iframeUrl = utils.toUrl(urlSrc || 'about:blank', {
-    messageId,
-    targetOrigin: location.origin,
-  })
-
-  const handler = createWindowHandler(iframeUrl, params)
+export default <T extends MessageBody>(urlSrc: string, params: ShowWindowParam<T>) => {
+  const { className, title, messageId, iframeProps, onMessage, onRender, afterClose, ...otherProps } = params
+  const callbackHandler = (handler: WindowHandler<T>) => {
+    const { destroy } = handler
+    handler.destroy = () => {
+      if (typeof destroy === 'function') {
+        destroy()
+      }
+      // 隐藏并销毁弹出层
+      hook.destroy()
+    }
+  }
   const hook = showModal(null, {
-    className: 'ant-external-modal-window',
+    ...otherProps,
+    className: classNames('ant-external-modal-window', className),
     closable: true,
     centered: true,
     style: {
@@ -31,35 +39,24 @@ export default (urlSrc: string, params: ShowWindowParam) => {
         {toReactNode(title, {
           className: 'modal-window-title',
         })}
-        <iframe
+        <WindowProxy
           {...iframeProps}
-          ref={(target) => {
-            if (target && target.contentWindow) {
-              handler.target = target.contentWindow
-            }
-          }}
-          allowFullScreen
-          allowTransparency={false}
-          src={iframeUrl}
-          onLoad={() => {
-            if (typeof onRender === 'function') {
-              onRender(handler)
-            }
-          }}
+          src={urlSrc}
+          messageId={messageId}
+          onMessage={onMessage}
+          onRender={onRender}
+          callbackHandler={callbackHandler}
         />
       </Fragment>
     ),
-    onOk: () => null,
     // 窗体关闭必须销毁事件绑定关系
     afterClose: () => {
-      handler.destroy()
+      if (typeof afterClose === 'function') {
+        afterClose()
+      }
+      hook.destroy()
     },
   })
-  //实现销毁方法
-  handler.hideModal = () => {
-    hook.destroy()
-  }
-
   // 返回销毁
   return hook
 }
