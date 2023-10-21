@@ -1,9 +1,9 @@
-import React, { Fragment, IframeHTMLAttributes, ReactNode } from 'react'
+import React, { Fragment, IframeHTMLAttributes } from 'react'
 import classNames from 'classnames'
 import showModal, { ShowModalParams } from './showModal'
-import { MessageBody, WindowHandler, WindowMessageBase } from '../interfaces'
-import { WindowProxy } from '../components'
 import toReactNode from './toReactNode'
+import { WindowProxy } from '../components'
+import { MessageBody, WindowHandler, WindowMessageBase } from '../interfaces'
 
 type ShowWindowParam<T> = WindowMessageBase<T> &
   ShowModalParams<null> & {
@@ -21,16 +21,18 @@ export default <T extends MessageBody>(urlSrc: string, params: ShowWindowParam<T
       if (typeof destroy === 'function') {
         destroy()
       }
-      // 隐藏并销毁弹出层
+      // 事件销毁同时把窗口也销毁
       hook.destroy()
     }
   }
+
   const hook = showModal(null, {
     ...otherProps,
     className: classNames('ant-external-modal-window', className),
     closable: true,
-    centered: true,
     style: {
+      minHeight: null,
+      minWidth: null,
       maxHeight: null,
       maxWidth: null,
     },

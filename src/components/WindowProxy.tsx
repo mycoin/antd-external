@@ -4,7 +4,7 @@ import { MessageBody, WindowHandler, WindowMessageBase } from '../interfaces'
 import { createWindowHandler } from '../utils'
 
 type WindowProxyProps<T> = IframeHTMLAttributes<HTMLIFrameElement> & {
-  messageId: string
+  messageId?: string
   // 窗口加载完成的回调方法
   onRender?: (handle: WindowHandler<T>) => void
   // 渲染完毕的回调钩子函数
@@ -24,7 +24,7 @@ export default class<T extends MessageBody> extends Component<WindowProxyProps<T
           if (!messageId || data.messageId === messageId) {
             onMessage(handler, data)
           } else if (data.messageId) {
-            utils.warning('Invalid message id.')
+            utils.warning('invalid message id.')
           }
         }
       },
