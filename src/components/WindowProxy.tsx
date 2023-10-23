@@ -29,6 +29,7 @@ export default class<T extends MessageBody> extends Component<WindowProxyProps<T
         }
       },
     })
+    // 注入消息唯一标记
     if (messageId) {
       const { postMessage } = handler
       handler.postMessage = (data) => {
@@ -51,6 +52,8 @@ export default class<T extends MessageBody> extends Component<WindowProxyProps<T
       messageId,
       targetOrigin: location.origin,
     })
+
+    // 操作句柄对象
     const handler = this.handler
     return (
       <iframe
