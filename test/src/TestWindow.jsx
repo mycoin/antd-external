@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button } from 'antd'
 import { utils } from 'rigel-base'
-import { WindowProxy, showWindow } from '../Main'
+import { WindowProxy, showWindow } from './Main'
 
 const ModalApp = () => {
   const showWindow2 = () => {
@@ -77,7 +77,8 @@ const ModalApp = () => {
   }
 
   return (
-    <div className="app">
+    <fieldset className="app">
+      <legend>showWindow</legend>
       <div>
         <Button onClick={showWindow1}>showWindow</Button>
         <Button onClick={showWindow2}>showWindowBL</Button>
@@ -102,7 +103,7 @@ const ModalApp = () => {
           }
         }}
       />
-    </div>
+    </fieldset>
   )
 }
 

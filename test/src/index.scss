@@ -1,0 +1,46 @@
+@import '~antd/dist/antd.css';
+@import '../../dist/index.css';
+
+body {
+  background: #ececec;
+}
+
+fieldset,
+legend {
+  font-size: 14px;
+}
+iframe {
+  border: none;
+}
+
+fieldset {
+  border: 1px solid #999;
+  border-radius: 10px;
+  & > legend {
+    width: fit-content;
+    border: 1px solid #999;
+    border-radius: 10px;
+  }
+}
+
+#content {
+  margin: 20px;
+  padding: 20px;
+  min-height: 600px;
+}
+
+.app {
+  margin: 10px 0;
+  padding: 0 10px 10px 10px;
+  & > legend {
+    background: #fff;
+    padding: 2px 6px;
+  }
+  & > div {
+    margin-bottom: 10px;
+  }
+}
+
+.app + .app {
+  margin-top: 0px;
+}

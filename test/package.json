@@ -14,11 +14,13 @@
     ]
   },
   "dependencies": {
-    "antd": "4.22.2",
-    "classnames": "2.3.1",
+    "antd": "^4.24.14",
+    "classnames": "^2.3.2",
     "mac-scrollbar": "^0.10.7",
-    "react": "16.14.0",
-    "react-dom": "16.14.0"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "rigel": "^0.0.2",
+    "rigel-base": "^0.0.6"
   },
   "devDependencies": {
     "@ali/takla-scripts": "^0.4.x",

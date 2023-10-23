@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ModalTests from './containers/ModalTests'
-import WindowTests from './containers/WindowTests'
-import ConfirmTests from './containers/ConfirmTests'
+import ModalTests from './TestModal'
+import WindowTests from './TestWindow'
+import ConfirmTests from './TestConfirm'
 
 import './index.scss'
 

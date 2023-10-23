@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
 import { Button, Modal } from 'antd'
-import { showMessage, showModal } from '../Main'
-import NamedForm from '../conponents/NamedForm'
+import { showMessage, showModal } from './Main'
+import NamedForm from './NamedForm'
 
 const ModalApp = () => {
   const valueModel = {
@@ -63,12 +63,13 @@ const ModalApp = () => {
     })
   }
   return (
-    <div className="app">
+    <fieldset className="app">
+      <legend>showMessage</legend>
       <Button onClick={showMessage1}>showMessage1</Button>
       <Button onClick={showMessage2}>showMessage2</Button>
       <Button onClick={showMessage3}>showMessage3</Button>
       <Button onClick={showModal1}>showModal</Button>
-    </div>
+    </fieldset>
   )
 }
 
