@@ -13,10 +13,15 @@ type WindowProxyProps<T> = IframeHTMLAttributes<HTMLIFrameElement> & {
 
 export default class<T extends MessageBody> extends Component<WindowProxyProps<T> & WindowMessageBase<T>> {
   private handler: WindowHandler<T>
+  private windowRef = React.createRef<HTMLIFrameElement>()
 
   componentWillMount() {
     const { src, messageId, onMessage } = this.props
-    const handler: WindowHandler<T> = createWindowHandler(src, {
+    const handler: WindowHandler<T> = createWindowHandler({
+      urlSrc: src,
+      getContentWindow: () => {
+        return (this.windowRef.current || {}).contentWindow
+      },
       onMessage: (handler, data, event) => {
         if (typeof onMessage === 'function') {
           // 这里过滤无效的消息事件
@@ -60,16 +65,12 @@ export default class<T extends MessageBody> extends Component<WindowProxyProps<T
         allowFullScreen={false}
         allowTransparency={false}
         {...otherProps}
-        ref={(target) => {
-          if (target && target.contentWindow) {
-            handler.contentWindow = target.contentWindow
-          }
-          if (target && typeof callbackHandler === 'function') {
-            callbackHandler(handler)
-          }
-        }}
+        ref={this.windowRef}
         src={urlSrc}
         onLoad={() => {
+          if (typeof callbackHandler === 'function') {
+            callbackHandler(handler)
+          }
           if (typeof onRender === 'function') {
             onRender(handler)
           }

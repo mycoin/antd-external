@@ -9,7 +9,7 @@ type MessageBody = Record<string, any> & {
 
 // 窗口通信操作对象
 type WindowHandler<T> = {
-  contentWindow?: Window
+  contentWindow: Window
   postMessage: (data: T) => void
   write: (html: string) => boolean
   destroy: () => void

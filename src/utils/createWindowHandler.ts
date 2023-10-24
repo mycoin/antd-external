@@ -1,5 +1,10 @@
 import { WindowMessageBase, WindowHandler } from '../interfaces'
 
+type CreateWindowHandlerParam<T> = WindowMessageBase<T> & {
+  urlSrc: string
+  getContentWindow: () => Window
+}
+
 const getTargetOrigin = (urlSrc: string, defaultValue: string) => {
   try {
     const { origin, hostname } = new URL(urlSrc)
@@ -16,10 +21,8 @@ const getTargetOrigin = (urlSrc: string, defaultValue: string) => {
  * @param params
  * @returns
  */
-export default <T>(urlSrc: string, params: WindowMessageBase<T>) => {
-  const { onMessage } = params
-
-  const targetOrigin = getTargetOrigin(urlSrc, '*')
+export default <T>(params: CreateWindowHandlerParam<T>) => {
+  const { urlSrc, onMessage, getContentWindow } = params
   const listener = (event: MessageEvent<T>) => {
     // 只监听来着窗口的消息
     if (event.source === handler.contentWindow) {
@@ -28,8 +31,12 @@ export default <T>(urlSrc: string, params: WindowMessageBase<T>) => {
     }
   }
 
+  const targetOrigin = getTargetOrigin(urlSrc, '*')
   const handler: WindowHandler<T> = {
-    contentWindow: null,
+    // 读取当前对象的方法
+    get contentWindow() {
+      return getContentWindow()
+    },
     // 发送给内嵌页面容器
     postMessage: (data) => {
       const { contentWindow } = handler
@@ -54,10 +61,9 @@ export default <T>(urlSrc: string, params: WindowMessageBase<T>) => {
       if (contentWindow) {
         removeEventListener('message', listener)
       }
-      // 销毁对象引用关系
-      delete handler.contentWindow
     },
   }
+
   // 添加事件绑定
   addEventListener('message', listener)
   // 返回句柄
