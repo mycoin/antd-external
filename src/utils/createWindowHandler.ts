@@ -24,7 +24,7 @@ export default <T>(urlSrc: string, params: WindowMessageBase<T>) => {
     // 只监听来着窗口的消息
     if (event.source === handler.contentWindow) {
       // 如果消息里面不包含编号则屏蔽
-      onMessage(handler, event.data)
+      onMessage(handler, event.data, event)
     }
   }
 

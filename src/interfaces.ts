@@ -17,7 +17,7 @@ type WindowHandler<T> = {
 
 type WindowMessageBase<T> = {
   // 接收到消息的方法
-  onMessage: (handle: WindowHandler<T>, data: T) => void
+  onMessage: (handle: WindowHandler<T>, data: T, messageEvent: MessageEvent<T>) => void
 }
 
 type RenderHookHandler<T> = {

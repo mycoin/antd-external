@@ -17,12 +17,12 @@ export default class<T extends MessageBody> extends Component<WindowProxyProps<T
   componentWillMount() {
     const { src, messageId, onMessage } = this.props
     const handler: WindowHandler<T> = createWindowHandler(src, {
-      onMessage: (handler, data) => {
+      onMessage: (handler, data, event) => {
         if (typeof onMessage === 'function') {
           // 这里过滤无效的消息事件
           // 如果消息里面不包含编号则屏蔽
           if (!messageId || data.messageId === messageId) {
-            onMessage(handler, data)
+            onMessage(handler, data, event)
           } else if (data.messageId) {
             utils.warning('invalid message id.')
           }
