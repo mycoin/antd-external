@@ -11,9 +11,9 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "files": [
-    "dist",
-    "mixins",
-    "typings",
+    "dist/",
+    "mixins/",
+    "typings/",
     "package.json",
     "README.md"
   ],
