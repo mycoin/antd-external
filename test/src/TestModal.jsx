@@ -62,6 +62,7 @@ const ModalApp = () => {
       duration: 10,
     })
   }
+
   return (
     <fieldset className="app">
       <legend>showMessage</legend>

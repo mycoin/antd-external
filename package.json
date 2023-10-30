@@ -27,8 +27,8 @@
     "mac-scrollbar": "^0.10.7",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "rigel": "^0.0.2",
-    "rigel-base": "^0.0.6"
+    "rigel": "^0.0.x",
+    "rigel-base": "^0.0.x"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.10.3",

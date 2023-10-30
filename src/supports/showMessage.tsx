@@ -3,8 +3,10 @@ import React, { ReactElement } from 'react'
 import { ArgsProps } from 'antd/lib/message'
 import toReactNode from './toReactNode'
 
-const showMessage = (params: ArgsProps) => {
-  message.destroy()
+const callMessageOpen = (params: ArgsProps) => {
+  if (!params.key) {
+    message.destroy()
+  }
 
   const { content, ...otherProps } = params
   const unsafeHide = message.open({
@@ -26,17 +28,19 @@ const showMessage = (params: ArgsProps) => {
 
 export default (content: string | Error | ReactElement | ArgsProps) => {
   if (content instanceof Error) {
-    return showMessage({
+    return callMessageOpen({
       type: 'warning',
       content: content.message,
     })
   } else if (React.isValidElement(content) || typeof content === 'string') {
-    return showMessage({
+    return callMessageOpen({
       content,
     })
   } else if (content && typeof content === 'object') {
-    return showMessage(content as ArgsProps)
+    return callMessageOpen(content as ArgsProps)
   } else {
     return () => {}
   }
 }
+
+export { callMessageOpen }
