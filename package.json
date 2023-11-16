@@ -24,6 +24,7 @@
   "dependencies": {
     "antd": "^4.24.14",
     "classnames": "^2.3.2",
+    "inview": "^0.0.15",
     "mac-scrollbar": "^0.10.7",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

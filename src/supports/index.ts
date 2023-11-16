@@ -1,3 +1,5 @@
+export { default as inViewExpose } from './inViewExpose'
+
 export { default as showConfirm } from './showConfirm'
 export { default as showMessage } from './showMessage'
 export { default as showModal } from './showModal'
