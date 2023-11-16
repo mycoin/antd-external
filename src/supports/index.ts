@@ -6,3 +6,5 @@ export { default as showLoading } from './showLoading'
 
 export { default as toPromise } from './toPromise'
 export { default as toReactNode } from './toReactNode'
+
+export { default as hv } from './hasValueModel'
