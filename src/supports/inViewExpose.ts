@@ -38,3 +38,4 @@ export default (params: InViewExpose) => {
     inview.destroy()
   }
 }
+export { InViewExpose, InViewContext }
