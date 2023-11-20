@@ -1,18 +1,16 @@
 import { ReactNode } from 'react'
 import { utils } from 'rigel-base'
-import { ArgsProps } from 'antd/lib/message'
 import showMessage, { callMessageOpen } from './showMessage'
 
-export default (content: ReactNode, params?: ArgsProps) => {
+export default (content: ReactNode, duration?: number) => {
   const key = utils.getGuid(11)
   const hide = callMessageOpen({
     type: 'loading',
     key,
     content: content || '正在加载中',
     onClick: null,
-    ...params,
+    duration: duration || 8,
   })
-
   return (success?: boolean, contentNode?: ReactNode) => {
     if (typeof success === 'boolean') {
       showMessage({
