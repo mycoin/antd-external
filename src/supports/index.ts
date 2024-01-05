@@ -10,3 +10,4 @@ export { default as toPromise } from './toPromise'
 export { default as toReactNode } from './toReactNode'
 
 export { default as hv } from './hasValueModel'
+export { default as gv } from './getEventValue'

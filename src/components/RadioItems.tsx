@@ -2,11 +2,15 @@ import React from 'react'
 import { Radio } from 'antd'
 import { RadioGroupProps, RadioChangeEvent } from 'antd/lib/radio'
 
-type RadioItemsProps = RadioGroupProps & React.RefAttributes<HTMLDivElement>
+type RadioItemsProps<T> = React.RefAttributes<HTMLDivElement> &
+  Omit<RadioGroupProps, 'onChange' | 'value'> & {
+    onChange: (valueModel: T) => void
+    value?: T
+  }
 
 const RadioGroup = Radio.Group
 
-export default (props: RadioItemsProps) => {
+export default function <T>(props: RadioItemsProps<T>) {
   const { onChange, value, ...otherProps } = props
   const onChanged = (event: RadioChangeEvent) => {
     if (typeof onChange === 'function') {
