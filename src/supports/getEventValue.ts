@@ -3,11 +3,15 @@ export default <T = any>(eventOrValue: any): T => {
   const { target } = eventOrValue || {}
 
   if (target && target.tagName) {
-    if (typeof target.checked === 'boolean') {
-      return target.checked
+    const { type, checked, files, value } = target
+    if (type === 'radio' || type === 'checkbox') {
+      return checked
+    } else if (type === 'file') {
+      return files
     } else {
-      return target.value
+      return value
     }
   }
+
   return eventOrValue
 }
