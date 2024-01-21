@@ -1,7 +1,6 @@
 {
   "name": "demos",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "takla-scripts dev",
@@ -23,7 +22,7 @@
     "rigel-base": "^0.0.6"
   },
   "devDependencies": {
-    "@ali/takla-scripts": "^0.4.x",
+    "@ali/takla-scripts": "^0.5.x",
     "@alife/web-based": "2.2.1",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.14.5",

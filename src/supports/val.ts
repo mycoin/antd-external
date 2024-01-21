@@ -12,6 +12,5 @@ export default <T = any>(eventOrValue: any): T => {
       return value
     }
   }
-
   return eventOrValue
 }
