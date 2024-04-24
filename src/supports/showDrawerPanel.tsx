@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Drawer, DrawerProps } from 'antd'
 import { render, unmountComponentAtNode } from 'react-dom'
+import classNames from 'classnames'
 import { RenderProxy } from '../components'
 import { RenderProxyProps } from '../components/RenderProxy'
 import { PromiseActions, RenderHookHandler } from '../interfaces'
 import { createHandlerHook } from './internal'
-import classNames from 'classnames'
 
 class InternalComponent<T = number> extends Component<any, any> {
   declare handler: RenderHookHandler<T>
