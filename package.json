@@ -12,7 +12,6 @@
   },
   "files": [
     "dist/",
-    "src/",
     "scss/",
     "typings/",
     "package.json",
