@@ -1,6 +1,6 @@
 {
   "name": "antd-external",
-  "version": "0.5.46",
+  "version": "0.5.101",
   "description": "antd v4 external utils.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -12,6 +12,7 @@
   },
   "files": [
     "dist/",
+    "src/",
     "scss/",
     "typings/",
     "package.json",
@@ -32,14 +33,14 @@
     "rigel-base": "^0.0.x"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.24.1",
     "@babel/preset-env": "^7.23.x",
     "@babel/preset-react": "^7.23.x",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.24",
-    "babel-eslint": "^10.1.0",
-    "bundle-scripts": "^0.3.x",
+    "bundle-scripts": "^0.3.26",
     "eslint": "^8.57.0",
-    "eslint-config-takla": "^0.x",
+    "eslint-config-takla": "^1.0.8",
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
     "typescript": "^5.3.3"

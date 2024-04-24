@@ -28,7 +28,7 @@
     "@babel/preset-react": "^7.14.5",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.3.1",
-    "eslint-config-takla": "^0.0.x",
+    "eslint-config-takla": "^1.0.8",
     "eslint-plugin-import": "^2.22.0",
     "prettier": "^2.7.1"
   },

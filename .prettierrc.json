@@ -1,4 +1,5 @@
 {
   "singleAttributePerLine": true,
-  "bracketSameLine": true
+  "bracketSameLine": true,
+  "quoteProps": "consistent"
 }

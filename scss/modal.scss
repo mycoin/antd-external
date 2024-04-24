@@ -33,3 +33,13 @@
     display: none;
   }
 }
+.ant-external-drawer-panel {
+  .ant-drawer-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    > *:last-child {
+      flex: 1;
+    }
+  }
+}

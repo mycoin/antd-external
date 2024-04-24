@@ -1,34 +1,13 @@
 import React from 'react'
 import { RenderProxy } from '../components'
 import showConfirm from './showConfirm'
-import toPromise from './toPromise'
-import showMessage from './showMessage'
-import { RenderHookHandler, RenderHookProxyBase, ModalProps } from '../interfaces'
+import { RenderHookHandler, RenderHookProxyBase, ModalProps, PromiseActions } from '../interfaces'
+import { toExecute } from './internal'
 
-type ShowModalParams<T> = Omit<ModalProps, keyof ShowModalOverrrde<T>> & ShowModalOverrrde<T>
+type ShowModalParams<T> = Omit<ModalProps, keyof ShowModalOverrrde<T>> & ShowModalOverrrde<T> & PromiseActions<T>
 type ShowModalOverrrde<T> = {
   content?: null
-  // 渲染主体（Hook）
   contentRender: RenderHookProxyBase<T>['contentRender']
-  // 点击提交按钮
-  onOk: (value: T) => Promise<void> | void
-  // 点击取消按钮
-  onCancel?: () => Promise<void> | void
-}
-
-// 执行回调函数
-const toExecute = (method: any, args?: any, doCatch?: boolean): Promise<any> => {
-  if (typeof method === 'function') {
-    const returnValue = toPromise(method(args) || true)
-    if (doCatch === true) {
-      returnValue.catch((error) => {
-        showMessage(error)
-      })
-    }
-    return returnValue
-  } else {
-    return toPromise(true)
-  }
 }
 
 export default <T extends {}>(current: T, props: ShowModalParams<T>) => {
