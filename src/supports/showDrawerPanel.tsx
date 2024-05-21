@@ -52,21 +52,22 @@ class InternalComponent<T = number> extends Component<any, any> {
   }
 }
 
-type RenderProxyType<T = any> = Omit<RenderProxyProps<T>, 'handler'>
+type RenderProxyType<T> = Omit<RenderProxyProps<T>, 'handler'>
 type DrawerType = Omit<DrawerProps, 'children' | 'content'>
 
-function showDrawerPanel<T = number>(params: RenderProxyType & DrawerType & PromiseActions<T>) {
+function showDrawerPanel<T = any>(params: RenderProxyType<T> & DrawerType & PromiseActions<T>) {
   const element = document.createDocumentFragment()
   const destroy = () => {
     unmountComponentAtNode(element)
   }
-  const node = (
+
+  render(
     <InternalComponent
       destroy={destroy}
       {...params}
-    />
+    />,
+    element,
   )
-  render(node, element)
 }
 
 export default showDrawerPanel
