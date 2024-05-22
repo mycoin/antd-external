@@ -1,6 +1,6 @@
 {
   "name": "antd-external",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "antd v4 external utils.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
