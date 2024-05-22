@@ -9,5 +9,6 @@ export { default as showWindow } from './showWindow'
 export { default as toPromise } from './toPromise'
 export { default as toReactNode } from './toReactNode'
 
+export { default as bindState } from './bindState'
 export { default as hv } from './hv'
 export { default as val } from './val'
