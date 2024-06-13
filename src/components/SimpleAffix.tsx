@@ -1,32 +1,42 @@
-import React, { useState, useEffect, useRef, ReactNode, CSSProperties } from 'react'
+import React, { useState, useEffect, useRef, ReactNode, CSSProperties, HTMLAttributes } from 'react'
 
-export interface AffixProps {
+type SimpleAffixProps = HTMLAttributes<HTMLElement> & {
   // element to follow/base floating points
-  watchElement?: string
+  watchElement?: HTMLElement | string
+  wrapperAttributes?: HTMLAttributes<HTMLElement>
   offsetTop?: number
   offsetBottom?: number
   // maintain width by inheriting parent width
   inheritParentWidth?: boolean
   // content
   children?: ReactNode
-  [prop: string]: any
 }
 
-export default (props: AffixProps) => {
-  const { watchElement = '', offsetTop = 15, offsetBottom = 15, inheritParentWidth = true, children, ...otherProps } = props
+const queryElement = (selector: string | HTMLElement): HTMLElement | null => {
+  if (selector instanceof HTMLElement) {
+    return selector
+  } else if (selector) {
+    return document.querySelector(selector)
+  }
+  return null
+}
+
+export default (props: SimpleAffixProps) => {
+  const {
+    watchElement = '',
+    wrapperAttributes = {},
+    offsetTop = 15,
+    offsetBottom = 15,
+    inheritParentWidth = true,
+    children,
+    ...otherProps
+  } = props
 
   const [affixStyle, setAffixStyle] = useState<CSSProperties>({})
   const rootRef = useRef<HTMLDivElement>(null)
   const affixRef = useRef<HTMLDivElement>(null)
   const prevWindowScrollYRef = useRef<number>(window?.scrollY ?? 0)
   const rootElement = rootRef.current
-
-  const queryElement = (selector: string): HTMLElement | null => {
-    if (selector) {
-      return document.querySelector(selector)
-    }
-    return null
-  }
 
   const isElementVisible = (element: HTMLElement) => {
     const rect = element.getBoundingClientRect()
@@ -68,21 +78,20 @@ export default (props: AffixProps) => {
       styleCss.position = 'fixed'
       styleCss.top = offsetTop
 
-      // follow root width
-      if (inheritParentWidth) styleCss.width = `${rootRef.current.clientWidth}px`
-
-      // reach end
-      if (scrollY + offsetTop + contentHeight >= floatEndPoint) styleCss.top = `${bottomPosition}px`
-
-      // affix height is bigger than view
+      if (inheritParentWidth) {
+        styleCss.width = rootRef.current.clientWidth + 'px'
+      }
+      if (scrollY + offsetTop + contentHeight >= floatEndPoint) {
+        styleCss.top = bottomPosition + 'px'
+      }
       if (affixHeight > window.innerHeight) {
-        // reach end
-        if (scrollY + affixRect.bottom >= floatEndPoint) styleCss.top = `${bottomPosition}px`
-        // scrolling down
-        else if (scrollingDown)
-          styleCss.top = `${Math.max(affixRect.top - scrollDistance, window.innerHeight - contentHeight - offsetBottom)}px`
-        // scrolling up
-        else if (scrollingUp) styleCss.top = `${Math.min(affixRect.top + scrollDistance)}px`
+        if (scrollY + affixRect.bottom >= floatEndPoint) {
+          styleCss.top = bottomPosition + 'px'
+        } else if (scrollingDown) {
+          styleCss.top = Math.max(affixRect.top - scrollDistance, window.innerHeight - contentHeight - offsetBottom) + 'px'
+        } else if (scrollingUp) {
+          styleCss.top = Math.min(affixRect.top + scrollDistance) + 'px'
+        }
       }
     }
     return styleCss
@@ -128,6 +137,7 @@ export default (props: AffixProps) => {
       {...otherProps}
       ref={rootRef}>
       <div
+        {...wrapperAttributes}
         ref={affixRef}
         style={affixStyle}>
         {children}
@@ -135,3 +145,5 @@ export default (props: AffixProps) => {
     </div>
   )
 }
+
+export { SimpleAffixProps }

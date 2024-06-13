@@ -6,7 +6,7 @@ import { WindowProxy } from '../components'
 import { MessageBody, WindowHandler, WindowMessageBase } from '../interfaces'
 
 type ShowWindowParam<T> = WindowMessageBase<T> &
-  ShowModalParams<null> & {
+  Omit<ShowModalParams<null>, 'contentRender'> & {
     messageId?: string
     iframeProps?: Omit<IframeHTMLAttributes<Element>, 'src'>
     // 窗口加载完成的回调方法
