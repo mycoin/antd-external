@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "bundle-scripts dev",
     "build": "bundle-scripts build",
-    "prepublishOnly": "npm run build && npm test"
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist/",
