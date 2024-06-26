@@ -50,9 +50,9 @@ type ModalProps = ModalFuncProps & {
 
 type PromiseActions<T> = {
   // 点击提交按钮
-  onOk?: (value: T) => Promise<void> | void
+  onOk?: (value: T) => Promise<any> | void
   // 点击取消按钮
-  onCancel?: () => Promise<void> | void
+  onCancel?: () => Promise<any> | void
 }
 
 export {
