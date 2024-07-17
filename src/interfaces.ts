@@ -55,6 +55,9 @@ type PromiseActions<T> = {
   onCancel?: () => Promise<any> | void
 }
 
+type Promisable<T = any> = T | Promise<T>
+type PromisableFn<T = any> = (args?: T) => Promisable<T>
+
 export {
   /**/
   ModalProps,
@@ -64,4 +67,6 @@ export {
   RenderHookProxyBase,
   WindowHandler,
   WindowMessageBase,
+  Promisable,
+  PromisableFn,
 }
