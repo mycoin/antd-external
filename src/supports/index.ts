@@ -6,6 +6,7 @@ export { default as showMessage } from './showMessage'
 export { default as showModal } from './showModal'
 export { default as showWindow } from './showWindow'
 
+export { default as debouncePromise } from './debouncePromise'
 export { default as promiseReduce } from './promiseReduce'
 export { default as promiseSeries } from './promiseSeries'
 export { default as promiseWaterfall } from './promiseWaterfall'
