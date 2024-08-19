@@ -43,3 +43,13 @@
     }
   }
 }
+
+.ant-external-notification {
+  background-color: rgba(0, 0, 0, 0.75);
+
+  .ant-notification-notice-message,
+  .ant-notification-notice-close,
+  .ant-notification-notice-description {
+    color: #fff;
+  }
+}
