@@ -75,7 +75,7 @@ export default (props: SimpleAffixProps) => {
     const bottomPosition = Math.ceil(floatEndPoint - (scrollY + contentHeight))
 
     if (scrollY + offsetTop > floatStartPoint && canFloat) {
-      styleCss.position = 'fixed'
+      styleCss.position = 'sticky'
       styleCss.top = offsetTop
 
       if (inheritParentWidth) {
