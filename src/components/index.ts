@@ -1,4 +1,5 @@
 export { default as CheckboxItems } from './CheckboxItems'
+export { default as Collapse } from './Collapse'
 export { default as ContextProvider } from './ContextProvider'
 export { default as Popconfirm } from './Popconfirm'
 export { default as RadioItems } from './RadioItems'
