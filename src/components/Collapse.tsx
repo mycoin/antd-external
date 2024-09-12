@@ -1,14 +1,14 @@
 import React, { Component, CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import classNames from 'classnames'
 
-type CollapseTriggerRender = (isEnough: boolean, showAll: () => void) => ReactNode
+type CollapseTriggerRender = (isExpand: boolean, toggle: () => void) => ReactNode
 type CollapseProps = HTMLAttributes<HTMLDivElement> & {
   defaultExpand?: boolean
   maxHeight?: number
 
   slideUp?: ReactNode | CollapseTriggerRender
   slideDown?: ReactNode | CollapseTriggerRender
-  beforeChange?: (showAll: boolean) => void | false
+  beforeChange?: (toggle: boolean) => void | false
 }
 
 type CollapseState = {
@@ -74,7 +74,6 @@ class Collapse extends Component<CollapseProps, CollapseState> {
         isExpand: !isExpand,
       })
     }
-
     if (typeof triggerRender === 'function') {
       return <div className="collapse-expand">{triggerRender(isEnough, toggleEvent)}</div>
     } else if (!isEnough) {
@@ -98,6 +97,8 @@ class Collapse extends Component<CollapseProps, CollapseState> {
       ...style,
       overflowY: 'hidden',
     }
+
+    // 如果没有获得高度则无需设置高度
     if (currentHeight) {
       if (isEnough || isExpand) {
         styleObject.height = currentHeight
