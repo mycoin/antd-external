@@ -1,8 +1,9 @@
 import React, { Component, CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import classNames from 'classnames'
 
-type CollapseTriggerRender = (isExpand: boolean, toggle: () => void) => ReactNode
+type CollapseTriggerRender = (isExpand: boolean, toggleEvent: () => void) => ReactNode
 type CollapseProps = HTMLAttributes<HTMLDivElement> & {
+  wrapperClassName?: string
   defaultExpand?: boolean
   maxHeight?: number
 
@@ -18,7 +19,7 @@ type CollapseState = {
 }
 
 class Collapse extends Component<CollapseProps, CollapseState> {
-  declare observer: MutationObserver
+  declare observer: ResizeObserver
 
   constructor(props: CollapseProps) {
     const { defaultExpand } = props
@@ -42,19 +43,14 @@ class Collapse extends Component<CollapseProps, CollapseState> {
       if (currentHeight === target.scrollHeight) {
         return
       }
-
       this.setState({
         currentHeight: target.scrollHeight,
         isEnough: maxHeight > target.scrollHeight,
       })
     }
 
-    this.observer = new MutationObserver(onCallback)
-    this.observer.observe(target, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    })
+    this.observer = new ResizeObserver(onCallback)
+    this.observer.observe(target)
     setTimeout(onCallback)
   }
 
@@ -90,14 +86,13 @@ class Collapse extends Component<CollapseProps, CollapseState> {
   }
 
   render() {
-    const { children, className, slideUp, slideDown, style, maxHeight, ...otherProps } = this.props
+    const { children, className, slideUp, slideDown, wrapperClassName, style, maxHeight, ...otherProps } = this.props
     const { isEnough, isExpand, currentHeight } = this.state
     const clazzName = classNames('antd-external-collapse', className)
     const styleObject: CSSProperties = {
       ...style,
       overflowY: 'hidden',
     }
-
     // 如果没有获得高度则无需设置高度
     if (currentHeight) {
       if (isEnough || isExpand) {
@@ -110,9 +105,12 @@ class Collapse extends Component<CollapseProps, CollapseState> {
       <div
         {...otherProps}
         className={clazzName}
-        style={styleObject}
-        ref={this.initObserver}>
-        {children}
+        style={styleObject}>
+        <div
+          className={wrapperClassName}
+          ref={this.initObserver}>
+          {children}
+        </div>
         {currentHeight ? this.renderCollapse(isExpand ? slideUp : slideDown) : null}
       </div>
     )
