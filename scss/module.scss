@@ -1,11 +1,6 @@
 .antd-external-collapse {
   transition: height 0.3s ease-out;
-  .collapse-expand {
-    position: sticky;
-    bottom: 0;
-  }
 }
-
-.antd-external-collapse > div {
+.antd-external-collapse > div:first-child {
   overflow: auto;
 }

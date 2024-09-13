@@ -51,6 +51,8 @@ class Collapse extends Component<CollapseProps, CollapseState> {
 
     this.observer = new ResizeObserver(onCallback)
     this.observer.observe(target)
+
+    // 默认触发一次计算
     setTimeout(onCallback)
   }
 
@@ -71,15 +73,9 @@ class Collapse extends Component<CollapseProps, CollapseState> {
       })
     }
     if (typeof triggerRender === 'function') {
-      return <div className="collapse-expand">{triggerRender(isEnough, toggleEvent)}</div>
+      return triggerRender(isEnough, toggleEvent)
     } else if (!isEnough) {
-      return (
-        <div
-          className="collapse-expand"
-          onClick={toggleEvent}>
-          {triggerRender}
-        </div>
-      )
+      return <div onClick={toggleEvent}>{triggerRender}</div>
     } else {
       return null
     }
