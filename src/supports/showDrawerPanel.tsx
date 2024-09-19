@@ -53,18 +53,24 @@ class InternalComponent<T = number> extends Component<any, any> {
 }
 
 type RenderProxyType<T> = Omit<RenderProxyProps<T>, 'handler'>
-type DrawerType = Omit<DrawerProps, 'children' | 'content'>
+type DrawerType = Omit<DrawerProps, 'children' | 'content'> & {
+  afterClose?: () => void
+}
 
 function showDrawerPanel<T = any>(params: RenderProxyType<T> & DrawerType & PromiseActions<T>) {
   const element = document.createDocumentFragment()
+  const { afterClose, ...otherProps } = params
   const destroy = () => {
     unmountComponentAtNode(element)
+    if (typeof afterClose === 'function') {
+      afterClose()
+    }
   }
 
   render(
     <InternalComponent
       destroy={destroy}
-      {...params}
+      {...otherProps}
     />,
     element,
   )
