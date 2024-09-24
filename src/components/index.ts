@@ -1,3 +1,5 @@
+export { ResizeObserver } from '@juggle/resize-observer'
+
 export { default as CheckboxItems } from './CheckboxItems'
 export { default as Collapse } from './Collapse'
 export { default as ContextProvider } from './ContextProvider'

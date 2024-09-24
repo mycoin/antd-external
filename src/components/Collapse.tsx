@@ -1,5 +1,8 @@
 import React, { Component, CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import classNames from 'classnames'
+import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
+
+const ResizeObserver = window.ResizeObserver || Polyfill
 
 type CollapseTriggerRender = (isExpand: boolean, toggleEvent: () => void) => ReactNode
 type CollapseProps = HTMLAttributes<HTMLDivElement> & {
