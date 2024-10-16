@@ -34,6 +34,9 @@
   }
 }
 .ant-external-drawer-panel {
+  iframe {
+    border: none;
+  }
   .ant-drawer-body {
     display: flex;
     flex-direction: column;
